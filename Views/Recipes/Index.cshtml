@@ -1,0 +1,54 @@
+@model Recipe_Manager.Models.RecipeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Recipes</h1>
+
+<p>
+    <a asp-action="Create">Add New Recipe</a>
+</p>
+<form asp-controller="Recipes" asp-action="Index" method="get">
+    <p>
+        <label>Title: <input type="text" asp-for="SearchString" /></label>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* 
+                DisplayNameFor HTML Helper inspects the Title property referenced in the 
+                lambda expression to determine the display name. 
+                Since the lambda expression is inspected rather than evaluated, 
+                you don't receive an access violation when model, model.Movies, 
+                or model.Movies[0] are null or empty. 
+                When the lambda expression is evaluated (for example, @Html.DisplayFor(modelItem => item.Title)), 
+                the model's property values are evaluated. 
+                The ! after model.Movies is the null-forgiving operator, 
+                which is used to declare that Movies isn't null.
+                 *@
+                @Html.DisplayNameFor(model => model.Recipes![0].Dish)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Recipes!)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dish)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
